@@ -1,0 +1,18 @@
+{
+  "templateId": "modern",
+  "data": {
+    "personalInfo": {
+      "fullName": "Test User",
+      "email": "test@test.com"
+    },
+    "experience": [
+      {
+        "company": "Google",
+        "position": "Software Engineer",
+        "startDate": "2020",
+        "endDate": "2022",
+        "description": "Here is a & test $ error _ with special % chars \n line 2"
+      }
+    ]
+  }
+}
