@@ -1,0 +1,8 @@
+fastapi==0.116.1
+groq==0.31.0
+pymongo==4.14.1
+python-dotenv==1.1.1
+requests==2.32.4
+uvicorn==0.35.0
+yt-dlp==2026.3.17
+pydantic==2.11.7

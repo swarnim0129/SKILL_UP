@@ -1,0 +1,36 @@
+from __future__ import annotations
+
+from pydantic import BaseModel, EmailStr, Field, BeforeValidator
+from typing import Optional, Annotated
+
+# Helper to convert MongoDB _id to string
+PyObjectId = Annotated[str, BeforeValidator(str)]
+
+# Base Schema (Shared properties)
+class UserBase(BaseModel):
+    email: EmailStr
+    full_name: str | None = None
+
+# Schema for Signup (Frontend sends this)
+class UserCreate(UserBase):
+    password: str
+
+# Schema for Reading Data (What we send back to Frontend)
+class UserResponse(UserBase):
+    id: Optional[PyObjectId] = Field(alias="_id", default=None)
+    user_id: Optional[int] = Field(default=None, alias="user_id")
+    
+    class Config:
+        populate_by_name = True
+
+# Schema for JWT Token
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+# Schema for Google OAuth callback
+class GoogleAuthCallback(BaseModel):
+    email: EmailStr
+    full_name: str | None = None
+    provider: str = "google"
+    provider_user_id: str
