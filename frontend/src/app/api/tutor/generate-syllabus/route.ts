@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { getGeminiClient } from "@/lib/gemini";
 import { connectDB, TutorSubject, getClerkId } from "../db";
 
 export async function POST(request: Request) {
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     const trimmedTopic = topic.trim();
 
     // Generate syllabus via Gemini
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+    const genAI = getGeminiClient();
     const model = genAI.getGenerativeModel({ model: "gemini-3.5-flash" });
 
     const prompt = `You are a curriculum designer. Given a topic, generate a structured syllabus with exactly 8 to 10 chapters, ordered from beginner to advanced concepts.

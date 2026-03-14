@@ -1,5 +1,5 @@
 const Interview = require("../models/Interview");
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { getGenAI, hasKeys } = require("../utils/geminiKeyManager");
 const UserActivity = require("../models/UserActivity");
 
 // POST /api/interview/:id/generate-feedback — AI-generate feedback from transcript
@@ -25,7 +25,7 @@ exports.generateFeedback = async (req, res) => {
       return res.json({ success: true, feedback: interview.feedback });
     }
 
-    if (!process.env.GEMINI_API_KEY) {
+    if (!hasKeys()) {
       return res.status(500).json({ error: "Gemini API key not configured" });
     }
 
@@ -37,7 +37,7 @@ exports.generateFeedback = async (req, res) => {
       )
       .join("\n");
 
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const genAI = getGenAI();
     const model = genAI.getGenerativeModel({ model: "gemini-3.5-flash" });
 
     const prompt = `You are an expert interview evaluator. Analyze the following interview transcript for a ${interview.seniority} ${interview.role} position (${interview.category} interview${interview.topic ? `, topic: ${interview.topic}` : ""}).

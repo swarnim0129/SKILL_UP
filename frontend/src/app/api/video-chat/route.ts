@@ -1,7 +1,5 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { getGeminiClient } from '@/lib/gemini';
 import { NextRequest, NextResponse } from 'next/server';
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
 interface TopicSection {
     title: string;
@@ -15,6 +13,7 @@ export async function POST(req: NextRequest) {
     try {
         const { message, videoTitle, topic, overallSummary, chapters, history } = await req.json();
 
+        const genAI = getGeminiClient();
         const model = genAI.getGenerativeModel({ model: 'gemini-3.5-flash' });
 
         // Build chapters context for the AI

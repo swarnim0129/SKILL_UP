@@ -1,12 +1,11 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { getGeminiClient } from '@/lib/gemini';
 import { NextRequest, NextResponse } from 'next/server';
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
 export async function POST(req: NextRequest) {
     try {
         const { message, context, history } = await req.json();
 
+        const genAI = getGeminiClient();
         const model = genAI.getGenerativeModel({ model: 'gemini-3.5-flash' });
 
         const systemPrompt = `You are a helpful learning assistant. The user is reading content about "${context}". 

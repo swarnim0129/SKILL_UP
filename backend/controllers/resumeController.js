@@ -1,4 +1,4 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+const { getGenAI, hasKeys } = require('../utils/geminiKeyManager');
 const ResumeAnalysis = require('../models/ResumeAnalysis');
 const Candidate = require('../models/Candidate');
 const UserActivity = require('../models/UserActivity');
@@ -12,7 +12,7 @@ exports.analyzeResume = async (req, res) => {
             return res.status(400).json({ message: 'No file provided' });
         }
 
-        if (!process.env.GEMINI_API_KEY) {
+        if (!hasKeys()) {
             return res.status(500).json({ message: 'Gemini API key not configured' });
         }
 
@@ -58,8 +58,7 @@ exports.analyzeResume = async (req, res) => {
             return res.status(400).json({ message: 'No text could be extracted from the PDF' });
         }
 
-        // Analyze with Gemini
-        const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+        const genAI = getGenAI();
         const model = genAI.getGenerativeModel({
             model: 'gemini-3.5-flash',
             systemInstruction: `You are an expert ATS (Applicant Tracking System) analyst and Career Coach. Analyze the following resume text thoroughly.

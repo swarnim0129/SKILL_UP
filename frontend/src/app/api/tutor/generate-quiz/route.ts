@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getClerkId } from "../db";
+import { getGeminiClient } from "@/lib/gemini";
 
 // ─── POST /api/tutor/generate-quiz ────────────────────────────────────────────
 // Generates 2-3 MCQ questions based on a chapter's title and description.
@@ -28,8 +29,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const { GoogleGenerativeAI } = await import("@google/generative-ai");
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+    const genAI = getGeminiClient();
     const model = genAI.getGenerativeModel({ model: "gemini-3.5-flash" });
 
     const prompt = `You are an expert educator creating a quick assessment quiz for a student who just completed a lesson.
