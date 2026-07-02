@@ -377,6 +377,5 @@ The platform uses **21 MongoDB collections** organized around 4 core domains:
 
 <div align="center">
 
-**Built with ❤️ by [Swarnim Bane](https://github.com/swarnim0129)**
 
 </div>
